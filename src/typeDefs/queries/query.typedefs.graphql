@@ -1,0 +1,6 @@
+# TO DO ADD MORE QUERY TYPES
+
+type Query {
+  client: Client
+  clients: [Client!]!
+}

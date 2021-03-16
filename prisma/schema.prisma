@@ -1,0 +1,241 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Enums
+
+// Booking status enum
+enum BookingStatus {
+  Active
+  Cancelled
+  Deleted
+  Done
+  Pending
+}
+
+// Business day enum
+enum BusinessDay {
+  Fri
+  Mon
+  Sat
+  Sun
+  Thu
+  Tue
+  Wed
+}
+
+// User status enum
+enum UserStatus {
+  Active
+  Inactive
+  Pending
+  Suspended
+}
+
+// Models (Simple database tables)
+
+// Address model
+model Address {
+  id        Int    @id @default(autoincrement())
+  address   String @db.VarChar(255)
+  latitude  Float
+  longitude Float
+
+  // An address may belong to a client
+  client Client?
+
+  // An address may belong to a service provider
+  serviceProvider ServiceProvider?
+}
+
+// Booking model
+model Booking {
+  id          Int           @id @default(autoincrement())
+  bookingTime DateTime
+  createdAt   DateTime      @default(now())
+  status      BookingStatus
+
+  // A booking belongs to a client
+  client   Client @relation(fields: [clientId], references: [id])
+  clientId Int
+
+  // A booking may be rated
+  rating   Rating @relation(fields: [ratingId], references: [id])
+  ratingId Int
+
+  // A booking is provided by a service provider
+  serviceProvider   ServiceProvider @relation(fields: [serviceProviderId], references: [id])
+  serviceProviderId Int
+
+  // A booking is attended by a staff
+  staff   Staff @relation(fields: [staffId], references: [id])
+  staffId Int
+
+  // A booking may be of house call, hence has an estimated transport cost
+  transportCost   TransportCost @relation(fields: [transportCostId], references: [id])
+  transportCostId Int
+
+}
+
+// Category model
+model Category {
+  id       Int    @id @default(autoincrement())
+  category String @db.VarChar(50)
+
+  // A category has a service of a service provider
+  serviceProviderCategory ServiceProviderCategory?
+}
+
+// Client model
+model Client {
+  id          Int    @id @default(autoincrement())
+  email       String @unique @db.VarChar(100)
+  firstName   String @db.VarChar(100)
+  lastName    String @db.VarChar(100)
+  password    String @db.VarChar(255)
+  phoneNumber String @db.VarChar(20)
+
+  // A cleint may have an address
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId Int
+
+  // A client may have bookings
+  bookings Booking[]
+}
+
+// Day model
+model Day {
+  id  Int         @id @default(autoincrement())
+  day BusinessDay
+
+  // A day may belong to DayTimes
+  dayTimes DayTime[]
+}
+
+// DayTime model
+model DayTime {
+  id Int @id @default(autoincrement())
+
+  // A day
+  day   Day @relation(fields: [dayId], references: [id])
+  dayId Int
+
+  // The time
+  time   Time @relation(fields: [timeId], references: [id])
+  timeId Int
+}
+
+// Rating model
+model Rating {
+  id      Int     @id @default(autoincrement())
+  rate    Float
+  comment String? @db.Text
+
+  // Bookings may be rated
+  bookings Booking[]
+}
+
+// Service model
+model Service {
+  id           Int     @id @default(autoincrement())
+  description  String  @db.Text
+  duration     Float
+  durationUnit String  @db.VarChar(10)
+  inHouse      Boolean
+  price        Float
+  title        String  @db.VarChar(100)
+
+  // A service  belongs under a category
+  serviceProviderCategory ServiceProviderCategory?
+
+  // A service is provided by a staff
+  staff   Staff @relation(fields: [staffId], references: [id])
+  staffId Int
+
+}
+
+// ServiceProvider model
+model ServiceProvider {
+  id          Int    @id @default(autoincrement())
+  email       String @unique @db.VarChar(100)
+  firstName   String @db.VarChar(100)
+  lastName    String @db.VarChar(100)
+  password    String @db.VarChar(255)
+  phoneNumber String @db.VarChar(20)
+
+  // A service provider may have an address
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId Int
+
+  // A service provider may have bookings
+  bookings Booking[]
+
+  // A service provider provides services of different categories
+  serviceProviderCategory ServiceProviderCategory[]
+
+  // A service has staffers
+  staffs Staff[]
+
+}
+
+// ServiceProviderCategory model
+model ServiceProviderCategory {
+  id Int @id @default(autoincrement())
+
+  // The category
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  // The service
+  service   Service @relation(fields: [serviceId], references: [id])
+  serviceId Int
+
+  // The service provider
+  serviceProvider   ServiceProvider @relation(fields: [serviceProviderId], references: [id])
+  serviceProviderId Int
+}
+
+// Staff model
+model Staff {
+  id        Int    @id @default(autoincrement())
+  firstName String @db.VarChar(100)
+  lastName  String @db.VarChar(100)
+
+  // A staff may have attended bookings
+  bookings Booking[]
+
+  // A staff specialises on ceertain services
+  services Service[]
+
+  // A staff belong to a service provider
+  serviceProvider   ServiceProvider @relation(fields: [serviceProviderId], references: [id])
+  serviceProviderId Int
+}
+
+// Time model
+model Time {
+  id        Int    @id @default(autoincrement())
+  startTime String @db.VarChar(50)
+  endTime   String @db.VarChar(50)
+
+  // The time may belong to DayTimes
+  dayTimes DayTime[]
+}
+
+// TransportCost model
+model TransportCost {
+  id            Int   @id @default(autoincrement())
+  distance      Float
+  estimatedCost Float
+
+  // Bookings made for inhouse call at certain distances
+  bookings Booking[]
+}

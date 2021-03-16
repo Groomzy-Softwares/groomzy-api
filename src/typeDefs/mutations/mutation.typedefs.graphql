@@ -1,0 +1,17 @@
+# TO DO ADD MORE MUTATION TYPES
+
+type Mutation {
+  clientSignup(
+    address: String
+    latitude: Float
+    businessName: String
+    email: String!
+    firstName: String!
+    lastName: String!
+    logitute: Float
+    password: String!
+    phoneNumber: String
+    userRole: String!
+    serviceTypes: [String!]
+  ): Message!
+}

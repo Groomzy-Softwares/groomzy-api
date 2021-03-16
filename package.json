@@ -1,0 +1,37 @@
+{
+  "name": "groomzy-api",
+  "version": "1.0.0",
+  "description": "The Groomzy API",
+  "main": "index.ts",
+  "repository": "git@github.com:Groomzy-Softwares/groomzy-api.git",
+  "author": "Sifiso <sifisomyeza@blackswan.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node -r dotenv/config src/index.ts",
+    "dev": "nodemon -e ts,graphql -x ts-node -r dotenv/config src/index.ts",
+    "lint": "prettier --check .",
+    "lint:format": "prettier --write .",
+    "prisma:format": "npx prisma format",
+    "prisma:migrate": "npx prisma migrate dev --name init"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint:format && yarn prisma:format && git add -A ."
+    }
+  },
+  "dependencies": {
+    "@prisma/client": "^2.19.0",
+    "dotenv": "^8.2.0",
+    "graphql-yoga": "^1.18.3"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.35",
+    "graphql-tools": "^7.0.4",
+    "husky": "4",
+    "nodemon": "^2.0.7",
+    "prettier": "2.2.1",
+    "prisma": "^2.19.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
+  }
+}

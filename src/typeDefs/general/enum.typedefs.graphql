@@ -1,0 +1,24 @@
+enum BookingStatus {
+  Active
+  Cancelled
+  Deleted
+  Done
+  Pending
+}
+
+enum BusinessDay {
+  Fri
+  Mon
+  Sat
+  Sun
+  Thu
+  Tue
+  Wed
+}
+
+enum UserStatus {
+  Active
+  Inactive
+  Pending
+  Suspended
+}

@@ -44,10 +44,10 @@ enum UserStatus {
 
 // Address model
 model Address {
-  id        Int    @id @default(autoincrement())
-  address   String @db.VarChar(255)
-  latitude  Float
-  longitude Float
+  id        Int     @id @default(autoincrement())
+  address   String? @db.VarChar(255)
+  latitude  Float?
+  longitude Float?
 
   // An address may belong to a client
   client Client?
@@ -183,7 +183,6 @@ model ServiceProvider {
 
   // A service has staffers
   staffs Staff[]
-
 }
 
 // ServiceProviderCategory model

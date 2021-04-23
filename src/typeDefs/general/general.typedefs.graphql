@@ -1,52 +1,17 @@
-# TO DO ADD MORE GENERIC TYPES
-
-type Client {
-  email: String!
-  firstName: String!
-  lastName: String!
+type ClientAddress {
   id: Int!
-  password: String!
-  phoneNumber: String
-  addresses: Address
+  address: String
+  latitude: Float
+  logtitude: Float
 }
 
-type Address {
+type ServiceProviderAddress {
   id: Int!
   address: String!
-  lat: Float!
-  log: Float!
+  latitude: Float!
+  logtitude: Float!
 }
 
 type Message {
   message: String!
 }
-
-# ******************************  Subscription types BEGINS ****************************** #
-
-type bookingMadeSubscription {
-  id: Int!
-  bookingId: Int!
-  mutation: String!
-}
-
-type bookingPaidSubscription {
-  id: Int!
-  mutation: String!
-}
-
-type bookingCancelledSubscription {
-  id: Int!
-  mutation: String!
-}
-
-type bookingRateServiceSubscription {
-  id: Int!
-  mutation: String!
-}
-
-type bookingDoneSubscription {
-  id: Int!
-  mutation: String!
-}
-
-# ******************************  Subscription types Ends ****************************** #

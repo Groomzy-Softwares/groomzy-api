@@ -2,18 +2,18 @@ import { validate } from "isemail";
 import bcrypt from "bcrypt";
 
 import { IContext } from "../../types";
-import { ISignupClientArgs } from "./types";
+import { ISignupServiceProviderArgs } from "./types";
 import { mailContent } from "../../../utils";
 import { transport } from "../../../utils";
 
-export const signupClientMutation = async (
+export const signupServiceProviderMutation = async (
   _: any,
-  clientInput: ISignupClientArgs,
+  signupServiceProviderInput: ISignupServiceProviderArgs,
   ctx: IContext
 ) => {
-  const { firstName, lastName, phoneNumber } = clientInput;
+  const { firstName, lastName, phoneNumber } = signupServiceProviderInput;
 
-  let { email, password } = clientInput;
+  let { email, password } = signupServiceProviderInput;
 
   try {
     // is email empty
@@ -41,26 +41,28 @@ export const signupClientMutation = async (
 
     // Check if the iser already exists.
     if (
-      await ctx.prisma.client.findUnique({
+      await ctx.prisma.serviceProvider.findUnique({
         where: {
           email,
         },
       })
     ) {
-      throw new Error("Client already exists, navigate to signing in.");
+      throw new Error(
+        "Service provider already exists, navigate to signing in."
+      );
     }
 
     // Hash password before stored in the database.
     password = await bcrypt.hash(password, 10);
 
-    // A client address is not required at signing up
-    // but a client can update his/her address
+    // A service provider address is not required at signing up
+    // but a service provider can update his/her address
     // hence why we create as blank on sign up.
     const address = await ctx.prisma.address.create({
       data: {},
     });
 
-    const client = await ctx.prisma.client.create({
+    const serviceProvider = await ctx.prisma.serviceProvider.create({
       data: {
         email,
         firstName,
@@ -71,34 +73,34 @@ export const signupClientMutation = async (
       },
     });
 
-    const clientEmailMessage = `You recently signed up to Groomzy.<br />
+    const serviceProviderEmailMessage = `You recently signed up to Groomzy.<br />
 			This email serves to confirm that your detailes were captured.<br />
 		`;
 
-    if (!client) {
+    if (!serviceProvider) {
       throw new Error(
         "Something went wrong when signing up, please try again later."
       );
     }
 
-    let clientSendEmailErrorMessage = "";
+    let serviceProviderSendEmailErrorMessage = "";
 
-    const clientContentEmail = mailContent(
-      client.firstName,
-      clientEmailMessage
+    const serviceProviderContentEmail = mailContent(
+      serviceProvider.firstName,
+      serviceProviderEmailMessage
     );
 
     try {
-      const clientEmail = {
+      const serviceProviderEmail = {
         from: "info@groomzy.co.za",
-        html: clientContentEmail,
+        html: serviceProviderContentEmail,
         subject: "Groomzy signup confirmation.",
-        to: client.email,
+        to: serviceProvider.email,
       };
 
-      await transport.sendMail(clientEmail);
+      await transport.sendMail(serviceProviderEmail);
     } catch (e) {
-      clientSendEmailErrorMessage = `We tried to send an email to ${email} but it failed.
+      serviceProviderSendEmailErrorMessage = `We tried to send an email to ${email} but it failed.
 			This may be due to an email provided not working.
 			Please provide an active email address.
 
@@ -106,18 +108,21 @@ export const signupClientMutation = async (
 			`;
     }
 
-    if (clientSendEmailErrorMessage && clientSendEmailErrorMessage.length > 0) {
-      await ctx.prisma.client.delete({
+    if (
+      serviceProviderSendEmailErrorMessage &&
+      serviceProviderSendEmailErrorMessage.length > 0
+    ) {
+      await ctx.prisma.serviceProvider.delete({
         where: {
           email,
         },
       });
 
-      throw new Error(clientSendEmailErrorMessage);
+      throw new Error(serviceProviderSendEmailErrorMessage);
     }
 
     return {
-      message: `All set. Now you can sign in using the credentials you provided sent to: ${client.email}. Please check your spam folder if email not recieved and report it as "not spam".`,
+      message: `All set. Now you can sign in using the credentials you provided sent to: ${serviceProvider.email}. Please check your spam folder if email not recieved and report it as "not spam".`,
     };
   } catch (error) {
     throw new Error(error.message);

@@ -1,0 +1,19 @@
+type Client {
+  email: String!
+  firstName: String!
+  lastName: String!
+  id: Int!
+  password: String!
+  phoneNumber: String
+  addresses: ClientAddress
+}
+
+type ServiceProvider {
+  email: String!
+  firstName: String!
+  lastName: String!
+  id: Int!
+  password: String!
+  phoneNumber: String
+  addresses: ServiceProviderAddress
+}

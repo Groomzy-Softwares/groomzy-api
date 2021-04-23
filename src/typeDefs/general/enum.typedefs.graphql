@@ -1,3 +1,5 @@
+# ***************** Enums for Groomzy schema types ***************** #
+
 enum BookingStatus {
   Active
   Cancelled

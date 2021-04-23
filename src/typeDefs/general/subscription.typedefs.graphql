@@ -1,0 +1,25 @@
+type bookingMadeSubscription {
+  id: Int!
+  bookingId: Int!
+  mutation: String!
+}
+
+type bookingPaidSubscription {
+  id: Int!
+  mutation: String!
+}
+
+type bookingCancelledSubscription {
+  id: Int!
+  mutation: String!
+}
+
+type bookingRateServiceSubscription {
+  id: Int!
+  mutation: String!
+}
+
+type bookingDoneSubscription {
+  id: Int!
+  mutation: String!
+}

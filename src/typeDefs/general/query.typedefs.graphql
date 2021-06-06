@@ -3,17 +3,15 @@ type Client {
   firstName: String!
   lastName: String!
   id: Int!
-  password: String!
   phoneNumber: String
   addresses: ClientAddress
 }
 
-type ServiceProvider {
+type Provider {
   email: String!
   firstName: String!
   lastName: String!
   id: Int!
-  password: String!
   phoneNumber: String
   addresses: ServiceProviderAddress
 }

@@ -3,5 +3,5 @@
 type Query {
   client: Client
   clients: [Client!]!
-  providers: [ServiceProvider!]!
+  providers: [Provider!]!
 }

@@ -10,9 +10,9 @@ CREATE TYPE "UserStatus" AS ENUM ('Active', 'Inactive', 'Pending', 'Suspended');
 -- CreateTable
 CREATE TABLE "Address" (
     "id" SERIAL NOT NULL,
-    "address" VARCHAR(255) NOT NULL,
-    "latitude" DOUBLE PRECISION NOT NULL,
-    "longitude" DOUBLE PRECISION NOT NULL,
+    "address" VARCHAR(255),
+    "latitude" DOUBLE PRECISION,
+    "longitude" DOUBLE PRECISION,
 
     PRIMARY KEY ("id")
 );
@@ -25,7 +25,7 @@ CREATE TABLE "Booking" (
     "status" "BookingStatus" NOT NULL,
     "clientId" INTEGER NOT NULL,
     "ratingId" INTEGER NOT NULL,
-    "serviceProviderId" INTEGER NOT NULL,
+    "providerId" INTEGER NOT NULL,
     "staffId" INTEGER NOT NULL,
     "transportCostId" INTEGER NOT NULL,
 
@@ -94,7 +94,7 @@ CREATE TABLE "Service" (
 );
 
 -- CreateTable
-CREATE TABLE "ServiceProvider" (
+CREATE TABLE "Provider" (
     "id" SERIAL NOT NULL,
     "email" VARCHAR(100) NOT NULL,
     "firstName" VARCHAR(100) NOT NULL,
@@ -111,7 +111,7 @@ CREATE TABLE "ServiceProviderCategory" (
     "id" SERIAL NOT NULL,
     "categoryId" INTEGER NOT NULL,
     "serviceId" INTEGER NOT NULL,
-    "serviceProviderId" INTEGER NOT NULL,
+    "providerId" INTEGER NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -121,6 +121,7 @@ CREATE TABLE "Staff" (
     "id" SERIAL NOT NULL,
     "firstName" VARCHAR(100) NOT NULL,
     "lastName" VARCHAR(100) NOT NULL,
+    "providerId" INTEGER NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -150,10 +151,10 @@ CREATE UNIQUE INDEX "Client.email_unique" ON "Client"("email");
 CREATE UNIQUE INDEX "Client_addressId_unique" ON "Client"("addressId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "ServiceProvider.email_unique" ON "ServiceProvider"("email");
+CREATE UNIQUE INDEX "Provider.email_unique" ON "Provider"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "ServiceProvider_addressId_unique" ON "ServiceProvider"("addressId");
+CREATE UNIQUE INDEX "Provider_addressId_unique" ON "Provider"("addressId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ServiceProviderCategory_categoryId_unique" ON "ServiceProviderCategory"("categoryId");
@@ -168,7 +169,7 @@ ALTER TABLE "Booking" ADD FOREIGN KEY ("clientId") REFERENCES "Client"("id") ON 
 ALTER TABLE "Booking" ADD FOREIGN KEY ("ratingId") REFERENCES "Rating"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Booking" ADD FOREIGN KEY ("serviceProviderId") REFERENCES "ServiceProvider"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Booking" ADD FOREIGN KEY ("providerId") REFERENCES "Provider"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Booking" ADD FOREIGN KEY ("staffId") REFERENCES "Staff"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -189,7 +190,7 @@ ALTER TABLE "DayTime" ADD FOREIGN KEY ("timeId") REFERENCES "Time"("id") ON DELE
 ALTER TABLE "Service" ADD FOREIGN KEY ("staffId") REFERENCES "Staff"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ServiceProvider" ADD FOREIGN KEY ("addressId") REFERENCES "Address"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Provider" ADD FOREIGN KEY ("addressId") REFERENCES "Address"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ServiceProviderCategory" ADD FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -198,4 +199,7 @@ ALTER TABLE "ServiceProviderCategory" ADD FOREIGN KEY ("categoryId") REFERENCES 
 ALTER TABLE "ServiceProviderCategory" ADD FOREIGN KEY ("serviceId") REFERENCES "Service"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ServiceProviderCategory" ADD FOREIGN KEY ("serviceProviderId") REFERENCES "ServiceProvider"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ServiceProviderCategory" ADD FOREIGN KEY ("providerId") REFERENCES "Provider"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Staff" ADD FOREIGN KEY ("providerId") REFERENCES "Provider"("id") ON DELETE CASCADE ON UPDATE CASCADE;

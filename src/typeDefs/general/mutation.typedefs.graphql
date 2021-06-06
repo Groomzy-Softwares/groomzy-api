@@ -1,0 +1,17 @@
+type SingnedInClient {
+  id: Int!
+  email: String!
+  firstName: String!
+  lastName: String!
+  phoneNumber: String
+  token: String
+}
+
+type SingnedInProvider {
+  id: Int!
+  email: String!
+  firstName: String!
+  lastName: String!
+  phoneNumber: String
+  token: String
+}

@@ -10,12 +10,26 @@ type Mutation {
     phoneNumber: String!
   ): Message!
 
-  # ********** Service provider signup **********#
-  signupServiceProvider(
+  # ********** Client signin ********** #
+  signinClient(
+    email: String!
+    password: String!
+    verify: String
+  ): SingnedInClient!
+
+  # ********** Provider signup ********** #
+  signupProvider(
     email: String!
     firstName: String!
     lastName: String!
     password: String!
     phoneNumber: String!
   ): Message!
+
+  # ********** Provider signin ********** #
+  signinProvider(
+    email: String!
+    password: String!
+    verify: String
+  ): SingnedInProvider!
 }

@@ -1,19 +1,25 @@
 import { validate } from "isemail";
 import bcrypt from "bcrypt";
 
-import { IContext } from "../../types";
-import { ISignupServiceProviderArgs } from "./types";
-import { mailContent } from "../../../utils";
-import { transport } from "../../../utils";
+import { IContext } from "../../../types";
+import { ISignupProviderArgs } from "./types";
+import { mailContent } from "../../../../utils";
+import { transport } from "../../../../utils";
 
-export const signupServiceProviderMutation = async (
+const messagingApi = require("@cmdotcom/text-sdk");
+
+export const signupProviderMutation = async (
   _: any,
-  signupServiceProviderInput: ISignupServiceProviderArgs,
+  signupProviderInput: ISignupProviderArgs,
   ctx: IContext
 ) => {
-  const { firstName, lastName, phoneNumber } = signupServiceProviderInput;
+  const { firstName, lastName, phoneNumber } = signupProviderInput;
 
-  let { email, password } = signupServiceProviderInput;
+  let { email, password } = signupProviderInput;
+
+  const cmMessageApi = new messagingApi.MessageApiClient(
+    process.env.CM_SMS || ""
+  );
 
   try {
     // is email empty
@@ -39,9 +45,9 @@ export const signupServiceProviderMutation = async (
     // Make email lower case and trim the white spaces.
     email = email.toLocaleLowerCase().trim();
 
-    // Check if the iser already exists.
+    // Check if the user already exists.
     if (
-      await ctx.prisma.serviceProvider.findUnique({
+      await ctx.prisma.provider.findUnique({
         where: {
           email,
         },
@@ -62,7 +68,7 @@ export const signupServiceProviderMutation = async (
       data: {},
     });
 
-    const serviceProvider = await ctx.prisma.serviceProvider.create({
+    const provider = await ctx.prisma.provider.create({
       data: {
         email,
         firstName,
@@ -77,16 +83,16 @@ export const signupServiceProviderMutation = async (
 			This email serves to confirm that your detailes were captured.<br />
 		`;
 
-    if (!serviceProvider) {
+    if (!provider) {
       throw new Error(
         "Something went wrong when signing up, please try again later."
       );
     }
 
-    let serviceProviderSendEmailErrorMessage = "";
+    let providerSendEmailErrorMessage = "";
 
     const serviceProviderContentEmail = mailContent(
-      serviceProvider.firstName,
+      provider.firstName,
       serviceProviderEmailMessage
     );
 
@@ -95,12 +101,12 @@ export const signupServiceProviderMutation = async (
         from: "info@groomzy.co.za",
         html: serviceProviderContentEmail,
         subject: "Groomzy signup confirmation.",
-        to: serviceProvider.email,
+        to: provider.email,
       };
 
       await transport.sendMail(serviceProviderEmail);
     } catch (e) {
-      serviceProviderSendEmailErrorMessage = `We tried to send an email to ${email} but it failed.
+      providerSendEmailErrorMessage = `We tried to send an email to ${email} but it failed.
 			This may be due to an email provided not working.
 			Please provide an active email address.
 
@@ -108,21 +114,38 @@ export const signupServiceProviderMutation = async (
 			`;
     }
 
+    let providerSendSMSErrorMessage = "";
+
+    try {
+      await cmMessageApi.sendTextMessage(
+        [phoneNumber],
+        "Groomzy",
+        "Hello Groomzy!"
+      );
+    } catch (error) {
+      providerSendSMSErrorMessage = `We tried to send an sms to ${phoneNumber} but it failed.
+			This may be due to the phone number provided not working.
+			Please provide an active phone number.
+
+			The signing up was not complete!
+			`;
+    }
+
     if (
-      serviceProviderSendEmailErrorMessage &&
-      serviceProviderSendEmailErrorMessage.length > 0
+      providerSendEmailErrorMessage &&
+      providerSendEmailErrorMessage.length > 0
     ) {
-      await ctx.prisma.serviceProvider.delete({
+      await ctx.prisma.provider.delete({
         where: {
           email,
         },
       });
 
-      throw new Error(serviceProviderSendEmailErrorMessage);
+      throw new Error(providerSendEmailErrorMessage);
     }
 
     return {
-      message: `All set. Now you can sign in using the credentials you provided sent to: ${serviceProvider.email}. Please check your spam folder if email not recieved and report it as "not spam".`,
+      message: `All set. Now you can sign in using the credentials you provided sent to: ${provider.email}. Please check your spam folder if email not recieved and report it as "not spam".`,
     };
   } catch (error) {
     throw new Error(error.message);

@@ -2,7 +2,7 @@ import { IContext } from "../../types";
 
 export const providersQuery = async (_: any, __: any, ctx: IContext) => {
   try {
-    return ctx.prisma.serviceProvider.findMany({
+    return ctx.prisma.provider.findMany({
       include: {
         address: true,
       },

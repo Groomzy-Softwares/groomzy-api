@@ -17,7 +17,7 @@ export default {
    * @param _
    * @param __
    * @param ctx
-   * @returns [ServicePrivider]
+   * @returns [Privider]
    */
   providers: async (_: any, __: any, ctx: IContext) =>
     providersQuery(_, __, ctx),

@@ -1,22 +1,23 @@
 import { createTransport } from "nodemailer";
 import _ from "lodash";
 
+const transport = createTransport({
+  host: "smtp.mailtrap.io",
+  port: 2525,
+  auth: {
+    user: "5a98d73fcea9ef",
+    pass: "540715227a9279",
+  },
+});
+
 // const transport = createTransport({
 //   auth: {
 //     pass: process.env.GROOMZY_MAIL_PASSWORD,
 //     user: process.env.GROOMZY_MAIL_USER,
 //   },
-//   service: process.env.GROOMZY_MAIL_SERVICE,
+//   host: process.env.GROOMZY_MAIL_SERVICE,
+//   port: Number(process.env.GROOMZY_MAIL_PORT),
 // });
-
-const transport = createTransport({
-  auth: {
-    pass: process.env.GROOMZY_MAIL_PASSWORD,
-    user: process.env.GROOMZY_MAIL_USER,
-  },
-  host: process.env.GROOMZY_MAIL_SERVICE,
-  port: Number(process.env.GROOMZY_MAIL_PORT),
-});
 
 const mailContent = (givenName: string, message: string) => `
 <!DOCTYPE html>

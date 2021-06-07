@@ -4,8 +4,7 @@ type Mutation {
   # ********** Client signup ********** #
   signupClient(
     email: String!
-    firstName: String!
-    lastName: String!
+    fullName: String!
     password: String!
     phoneNumber: String!
   ): Message!
@@ -20,8 +19,7 @@ type Mutation {
   # ********** Provider signup ********** #
   signupProvider(
     email: String!
-    firstName: String!
-    lastName: String!
+    fullName: String!
     password: String!
     phoneNumber: String!
   ): Message!

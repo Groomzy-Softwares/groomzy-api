@@ -11,7 +11,7 @@ export const signupClientMutation = async (
   clientSignupInput: ISignupClientArgs,
   ctx: IContext
 ) => {
-  const { firstName, lastName, phoneNumber } = clientSignupInput;
+  const { fullName, phoneNumber } = clientSignupInput;
 
   let { email, password } = clientSignupInput;
 
@@ -63,8 +63,7 @@ export const signupClientMutation = async (
     const client = await ctx.prisma.client.create({
       data: {
         email,
-        firstName,
-        lastName,
+        fullName,
         password,
         phoneNumber,
         addressId: address.id,
@@ -83,10 +82,7 @@ export const signupClientMutation = async (
 
     let clientSendEmailErrorMessage = "";
 
-    const clientContentEmail = mailContent(
-      client.firstName,
-      clientEmailMessage
-    );
+    const clientContentEmail = mailContent(client.fullName, clientEmailMessage);
 
     try {
       const clientEmail = {

@@ -13,7 +13,7 @@ export const signupProviderMutation = async (
   signupProviderInput: ISignupProviderArgs,
   ctx: IContext
 ) => {
-  const { firstName, lastName, phoneNumber } = signupProviderInput;
+  const { fullName, phoneNumber } = signupProviderInput;
 
   let { email, password } = signupProviderInput;
 
@@ -71,8 +71,7 @@ export const signupProviderMutation = async (
     const provider = await ctx.prisma.provider.create({
       data: {
         email,
-        firstName,
-        lastName,
+        fullName,
         password,
         phoneNumber,
         addressId: address.id,
@@ -92,7 +91,7 @@ export const signupProviderMutation = async (
     let providerSendEmailErrorMessage = "";
 
     const serviceProviderContentEmail = mailContent(
-      provider.firstName,
+      provider.fullName,
       serviceProviderEmailMessage
     );
 

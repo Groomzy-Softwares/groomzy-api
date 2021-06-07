@@ -44,8 +44,7 @@ CREATE TABLE "Category" (
 CREATE TABLE "Client" (
     "id" SERIAL NOT NULL,
     "email" VARCHAR(100) NOT NULL,
-    "firstName" VARCHAR(100) NOT NULL,
-    "lastName" VARCHAR(100) NOT NULL,
+    "fullName" VARCHAR(100) NOT NULL,
     "password" VARCHAR(255) NOT NULL,
     "phoneNumber" VARCHAR(20) NOT NULL,
     "addressId" INTEGER NOT NULL,
@@ -97,8 +96,7 @@ CREATE TABLE "Service" (
 CREATE TABLE "Provider" (
     "id" SERIAL NOT NULL,
     "email" VARCHAR(100) NOT NULL,
-    "firstName" VARCHAR(100) NOT NULL,
-    "lastName" VARCHAR(100) NOT NULL,
+    "fullName" VARCHAR(100) NOT NULL,
     "password" VARCHAR(255) NOT NULL,
     "phoneNumber" VARCHAR(20) NOT NULL,
     "addressId" INTEGER NOT NULL,
@@ -119,8 +117,7 @@ CREATE TABLE "ServiceProviderCategory" (
 -- CreateTable
 CREATE TABLE "Staff" (
     "id" SERIAL NOT NULL,
-    "firstName" VARCHAR(100) NOT NULL,
-    "lastName" VARCHAR(100) NOT NULL,
+    "fullName" VARCHAR(100) NOT NULL,
     "providerId" INTEGER NOT NULL,
 
     PRIMARY KEY ("id")

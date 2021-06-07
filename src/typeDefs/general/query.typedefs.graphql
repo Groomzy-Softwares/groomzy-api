@@ -1,7 +1,6 @@
 type Client {
   email: String!
-  firstName: String!
-  lastName: String!
+  fullName: String!
   id: Int!
   phoneNumber: String
   addresses: ClientAddress
@@ -9,8 +8,7 @@ type Client {
 
 type Provider {
   email: String!
-  firstName: String!
-  lastName: String!
+  fullName: String!
   id: Int!
   phoneNumber: String
   addresses: ServiceProviderAddress

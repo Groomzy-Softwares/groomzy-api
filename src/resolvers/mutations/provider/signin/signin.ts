@@ -70,7 +70,7 @@ export const signinProviderMutation = async (
       process.env.GROOMZY_JWT_SECRET
     );
 
-    return { token, ...user };
+    return { token, role: "Provider", ...user };
   } catch (error) {
     throw new Error(error.message);
   }

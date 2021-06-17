@@ -10,11 +10,7 @@ type Mutation {
   ): Message!
 
   # ********** Client signin ********** #
-  signinClient(
-    email: String!
-    password: String!
-    verify: String
-  ): SingnedInClient!
+  signinClient(email: String!, password: String!, verify: String): Client!
 
   # ********** Provider signup ********** #
   signupProvider(
@@ -25,9 +21,5 @@ type Mutation {
   ): Message!
 
   # ********** Provider signin ********** #
-  signinProvider(
-    email: String!
-    password: String!
-    verify: String
-  ): SingnedInProvider!
+  signinProvider(email: String!, password: String!, verify: String): Provider!
 }

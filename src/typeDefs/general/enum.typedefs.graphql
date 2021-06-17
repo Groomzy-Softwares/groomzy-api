@@ -1,5 +1,6 @@
-# ***************** Enums for Groomzy schema types ***************** #
+# ***************** Enums ***************** #
 
+# Booking status enum
 enum BookingStatus {
   Active
   Cancelled
@@ -8,6 +9,7 @@ enum BookingStatus {
   Pending
 }
 
+# Business day enum
 enum BusinessDay {
   Fri
   Mon
@@ -18,6 +20,7 @@ enum BusinessDay {
   Wed
 }
 
+# User status enum
 enum UserStatus {
   Active
   Inactive

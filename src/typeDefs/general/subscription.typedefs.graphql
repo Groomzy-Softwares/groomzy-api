@@ -1,3 +1,5 @@
+# ***************** Subscription return types ***************** #
+
 type bookingMadeSubscription {
   id: Int!
   bookingId: Int!

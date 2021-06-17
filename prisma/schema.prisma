@@ -79,6 +79,10 @@ model Booking {
   staff   Staff @relation(fields: [staffId], references: [id])
   staffId Int
 
+  // A service booked
+  service   Service @relation(fields: [serviceId], references: [id])
+  serviceId Int
+
   // A booking may be of house call, hence has an estimated transport cost
   transportCost   TransportCost @relation(fields: [transportCostId], references: [id])
   transportCostId Int
@@ -90,8 +94,8 @@ model Category {
   id       Int    @id @default(autoincrement())
   category String @db.VarChar(50)
 
-  // A category has a service of a service provider
-  serviceProviderCategory ServiceProviderCategory?
+  // A category has a service of provided by the provider
+  serviceProviderCategory ServiceProviderCategory[]
 }
 
 // Client model
@@ -121,8 +125,6 @@ model Day {
 
 // DayTime model
 model DayTime {
-  id Int @id @default(autoincrement())
-
   // A day
   day   Day @relation(fields: [dayId], references: [id])
   dayId Int
@@ -130,6 +132,13 @@ model DayTime {
   // The time
   time   Time @relation(fields: [timeId], references: [id])
   timeId Int
+
+  // The operatimg day time for the service provider
+  provider   Provider @relation(fields: [providerId], references: [id])
+  providerId Int
+
+  @@id([dayId, timeId, providerId])
+  @@index([dayId, timeId, providerId])
 }
 
 // Rating model
@@ -152,13 +161,15 @@ model Service {
   price        Float
   title        String  @db.VarChar(100)
 
-  // A service  belongs under a category
-  serviceProviderCategory ServiceProviderCategory?
+  // A service is provided by a provider and belongs to a certain category
+  serviceProviderCategory ServiceProviderCategory[]
+
+  // A service bookings
+  bookings Booking[]
 
   // A service is provided by a staff
   staff   Staff @relation(fields: [staffId], references: [id])
   staffId Int
-
 }
 
 // Provider model
@@ -169,28 +180,25 @@ model Provider {
   password    String @db.VarChar(255)
   phoneNumber String @db.VarChar(20)
 
-  // A service provider may have an address
+  // A provider may have an address
   address   Address @relation(fields: [addressId], references: [id])
   addressId Int
 
-  // A service provider may have bookings
+  // A provider may have bookings
   bookings Booking[]
 
-  // A service provider provides services of different categories
-  serviceProviderCategory ServiceProviderCategory[]
+  // A provider provides services of different categories
+  serviceProviderCategories ServiceProviderCategory[]
 
   // A service has staffers
   staffs Staff[]
+
+  // A provider operating day times
+  dayTimes DayTime[]
 }
 
 // ServiceProviderCategory model
 model ServiceProviderCategory {
-  id Int @id @default(autoincrement())
-
-  // The category
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId Int
-
   // The service
   service   Service @relation(fields: [serviceId], references: [id])
   serviceId Int
@@ -198,6 +206,13 @@ model ServiceProviderCategory {
   // The provider
   provider   Provider @relation(fields: [providerId], references: [id])
   providerId Int
+
+  // The category
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  @@id([categoryId, serviceId, providerId])
+  @@index([categoryId, serviceId, providerId])
 }
 
 // Staff model

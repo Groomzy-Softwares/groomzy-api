@@ -5,11 +5,11 @@ type Address {
   # Address identifier
   id: Int!
   # Address
-  address: String!
+  address: String
   # Location latitude
-  latitude: Float!
+  latitude: Float
   # Location longitude
-  longitude: Float!
+  longitude: Float
 }
 
 # Category type

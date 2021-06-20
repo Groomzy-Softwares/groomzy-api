@@ -20,6 +20,7 @@ export const providersQuery = async (_: any, __: any, ctx: IContext) => {
         serviceProviderCategories: {
           select: {
             category: true,
+            service: true,
           },
         },
       },

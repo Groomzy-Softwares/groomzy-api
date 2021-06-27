@@ -7,6 +7,8 @@ import { ISigninClientArgs } from "./mutations/client/signin/types";
 import { signinClientMutation } from "./mutations/client/signin/signin";
 import { ISigninProviderArgs } from "./mutations/provider/signin/types";
 import { signinProviderMutation } from "./mutations/provider/signin/signin";
+import { addServiceMutation } from "./mutations/service/addServices/addServices";
+import { IAddServiceArgs } from "./mutations/service/addServices/types";
 
 export default {
   /**
@@ -42,5 +44,12 @@ export default {
     ctx: IContext
   ) => {
     return signinProviderMutation(_, provider, ctx);
+  },
+
+  /**
+   * Add service mutation
+   */
+  addService: async (_: any, service: IAddServiceArgs, ctx: IContext) => {
+    return addServiceMutation(_, service, ctx);
   },
 };

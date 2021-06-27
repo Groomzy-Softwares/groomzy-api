@@ -22,4 +22,15 @@ type Mutation {
 
   # ********** Provider signin ********** #
   signinProvider(email: String!, password: String!, verify: String): Provider!
+
+  # ********** Add service ********** #
+  addService(
+    category: String!
+    title: String!
+    description: String!
+    duration: Float!
+    durationUnit: String!
+    price: Float!
+    inHouse: Boolean!
+  ): Message!
 }

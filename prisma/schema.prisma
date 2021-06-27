@@ -162,14 +162,13 @@ model Service {
   title        String  @db.VarChar(100)
 
   // A service is provided by a provider and belongs to a certain category
-  serviceProviderCategory ServiceProviderCategory[]
+  serviceProviderCategories ServiceProviderCategory[]
 
   // A service bookings
   bookings Booking[]
 
-  // A service is provided by a staff
-  staff   Staff @relation(fields: [staffId], references: [id])
-  staffId Int
+  // A service may be attended by a staffs
+  staffs Staff[]
 }
 
 // Provider model

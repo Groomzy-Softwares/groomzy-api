@@ -128,6 +128,8 @@ type Service {
   title: String!
   # Service staff
   staff: Staff
+  # Service category
+  serviceProviderCategories: [ServiceProviderCategory!]
 }
 
 # Service Provider Category type

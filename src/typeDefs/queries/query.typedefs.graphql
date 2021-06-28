@@ -5,4 +5,5 @@ type Query {
   clients: [Client!]!
   providers: [Provider!]!
   services: [Service!]!
+  staffs: [Staff!]!
 }

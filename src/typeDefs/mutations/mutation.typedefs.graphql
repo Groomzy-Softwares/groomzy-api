@@ -33,4 +33,13 @@ type Mutation {
     price: Float!
     inHouse: Boolean!
   ): Message!
+
+  # ********** Delete service ********** #
+  deleteService(serviceId: Int!, category: String!): Message!
+
+  # ********** Add staff ********** #
+  addStaff(fullName: String!): Message!
+
+  # ********** Delete staff ********** #
+  deleteStaff(staffId: Int!): Message!
 }

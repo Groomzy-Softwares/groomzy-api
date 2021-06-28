@@ -9,6 +9,12 @@ import { ISigninProviderArgs } from "./mutations/provider/signin/types";
 import { signinProviderMutation } from "./mutations/provider/signin/signin";
 import { addServiceMutation } from "./mutations/service/addServices/addServices";
 import { IAddServiceArgs } from "./mutations/service/addServices/types";
+import { addStaffMutation } from "./mutations/staff/addStaff/addStaff";
+import { IAddStaffArgs } from "./mutations/staff/addStaff/types";
+import { IDeleteServiceArgs } from "./mutations/service/deleteService/types";
+import { deleteServiceMutation } from "./mutations/service/deleteService/deleteService";
+import { IDeleteStaffArgs } from "./mutations/staff/deleteStaff/types";
+import { deleteStaffMutation } from "./mutations/staff/deleteStaff/deleteStaff";
 
 export default {
   /**
@@ -51,5 +57,26 @@ export default {
    */
   addService: async (_: any, service: IAddServiceArgs, ctx: IContext) => {
     return addServiceMutation(_, service, ctx);
+  },
+
+  /**
+   * Delete service mutation
+   */
+  deleteService: async (_: any, service: IDeleteServiceArgs, ctx: IContext) => {
+    return deleteServiceMutation(_, service, ctx);
+  },
+
+  /**
+   * Add staff mutation
+   */
+  addStaff: async (_: any, staff: IAddStaffArgs, ctx: IContext) => {
+    return addStaffMutation(_, staff, ctx);
+  },
+
+  /**
+   * Delete staff mutation
+   */
+  deleteStaff: async (_: any, staff: IDeleteStaffArgs, ctx: IContext) => {
+    return deleteStaffMutation(_, staff, ctx);
   },
 };

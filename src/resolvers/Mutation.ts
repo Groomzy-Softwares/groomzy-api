@@ -15,6 +15,10 @@ import { IDeleteServiceArgs } from "./mutations/service/deleteService/types";
 import { deleteServiceMutation } from "./mutations/service/deleteService/deleteService";
 import { IDeleteStaffArgs } from "./mutations/staff/deleteStaff/types";
 import { deleteStaffMutation } from "./mutations/staff/deleteStaff/deleteStaff";
+import { editServiceMutation } from "./mutations/service/editService/editService";
+import { IEditServiceArgs } from "./mutations/service/editService/types";
+import { IEditStaffArgs } from "./mutations/staff/editStaff/types";
+import { editStaffMutation } from "./mutations/staff/editStaff/editStaff";
 
 export default {
   /**
@@ -67,6 +71,13 @@ export default {
   },
 
   /**
+   * Edit service mutation
+   */
+  editService: async (_: any, service: IEditServiceArgs, ctx: IContext) => {
+    return editServiceMutation(_, service, ctx);
+  },
+
+  /**
    * Add staff mutation
    */
   addStaff: async (_: any, staff: IAddStaffArgs, ctx: IContext) => {
@@ -78,5 +89,12 @@ export default {
    */
   deleteStaff: async (_: any, staff: IDeleteStaffArgs, ctx: IContext) => {
     return deleteStaffMutation(_, staff, ctx);
+  },
+
+  /**
+   * Edit staff mutation
+   */
+  editStaff: async (_: any, staff: IEditStaffArgs, ctx: IContext) => {
+    return editStaffMutation(_, staff, ctx);
   },
 };

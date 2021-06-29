@@ -37,9 +37,24 @@ type Mutation {
   # ********** Delete service ********** #
   deleteService(serviceId: Int!, category: String!): Message!
 
+  # ********** Edit service ********** #
+  editService(
+    serviceId: Int!
+    category: String
+    title: String
+    description: String
+    duration: Float
+    durationUnit: String
+    price: Float
+    inHouse: Boolean
+  ): Message!
+
   # ********** Add staff ********** #
   addStaff(fullName: String!): Message!
 
   # ********** Delete staff ********** #
   deleteStaff(staffId: Int!): Message!
+
+  # ********** Edit staff ********** #
+  editStaff(staffId: Int!, fullName: String): Message!
 }

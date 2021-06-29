@@ -1,19 +1,21 @@
 import jwt from "jsonwebtoken";
 
 import { IContext } from "../../../types";
-import { IAddStaffArgs } from "./types";
+import { IEditStaffArgs } from "./types";
 
-export const addStaffMutation = async (
+export const editStaffMutation = async (
   _: any,
-  addStaffInput: IAddStaffArgs,
+  editStaffInput: IEditStaffArgs,
   ctx: IContext
 ) => {
-  const { fullName } = addStaffInput;
+  const { fullName, staffId } = editStaffInput;
+
+  const staffToUpdate: Omit<IEditStaffArgs, "staffId"> = {};
 
   try {
-    // Full name is required
-    if (!fullName) {
-      throw new Error("Full name is required.");
+    // Update full name
+    if (fullName) {
+      staffToUpdate.fullName = fullName;
     }
 
     try {
@@ -39,19 +41,15 @@ export const addStaffMutation = async (
 
       const { id: providerId, role } = signedIn as { id: number; role: string };
 
-      await ctx.prisma.staff.create({
-        data: {
-          fullName,
-          provider: {
-            connect: {
-              id: providerId,
-            },
-          },
+      await ctx.prisma.staff.update({
+        where: {
+          id: staffId,
         },
+        data: staffToUpdate,
       });
 
       return {
-        message: "Staff added successfully",
+        message: "staff updated successfully",
       };
     } catch (error) {
       throw Error(error.message);

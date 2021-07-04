@@ -61,15 +61,16 @@ model Booking {
   id          Int           @id @default(autoincrement())
   bookingTime DateTime
   createdAt   DateTime      @default(now())
+  inHouse     Boolean       @default(false)
   status      BookingStatus
+
 
   // A booking belongs to a client
   client   Client @relation(fields: [clientId], references: [id])
   clientId Int
 
   // A booking may be rated
-  rating   Rating @relation(fields: [ratingId], references: [id])
-  ratingId Int
+  rating Rating?
 
   // A booking is provided by a provider
   provider   Provider @relation(fields: [providerId], references: [id])
@@ -84,9 +85,7 @@ model Booking {
   serviceId Int
 
   // A booking may be of house call, hence has an estimated transport cost
-  transportCost   TransportCost @relation(fields: [transportCostId], references: [id])
-  transportCostId Int
-
+  transportCost TransportCost?
 }
 
 // Category model
@@ -117,7 +116,7 @@ model Client {
 // Day model
 model Day {
   id  Int         @id @default(autoincrement())
-  day BusinessDay
+  day BusinessDay @unique
 
   // A day may belong to DayTimes
   dayTimes DayTime[]
@@ -125,6 +124,7 @@ model Day {
 
 // DayTime model
 model DayTime {
+  id    Int @id @default(autoincrement())
   // A day
   day   Day @relation(fields: [dayId], references: [id])
   dayId Int
@@ -137,8 +137,8 @@ model DayTime {
   provider   Provider @relation(fields: [providerId], references: [id])
   providerId Int
 
-  @@id([dayId, timeId, providerId])
-  @@index([dayId, timeId, providerId])
+  @@unique([dayId, providerId])
+  @@index([dayId, providerId])
 }
 
 // Rating model
@@ -147,8 +147,9 @@ model Rating {
   rate    Float
   comment String? @db.Text
 
-  // Bookings may be rated
-  bookings Booking[]
+  // Booking may be rated
+  booking   Booking @relation(fields: [bookingId], references: [id])
+  bookingId Int
 }
 
 // Service model
@@ -247,5 +248,6 @@ model TransportCost {
   estimatedCost Float
 
   // Bookings made for inhouse call at certain distances
-  bookings Booking[]
+  booking   Booking @relation(fields: [bookingId], references: [id])
+  bookingId Int
 }

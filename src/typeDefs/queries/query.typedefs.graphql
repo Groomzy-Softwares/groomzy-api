@@ -4,6 +4,11 @@ type Query {
   client: Client
   clients: [Client!]!
   providers: [Provider!]!
+  providerRatings(providerId: Int!): Provider!
+  providerBookings(providerId: Int!): Provider!
+  providerServices(providerId: Int!): Provider!
+  providerStaffs(providerId: Int!): Provider!
+  providerOperatingTimes(providerId: Int!): Provider!
   services: [Service!]!
   staffs: [Staff!]!
 }

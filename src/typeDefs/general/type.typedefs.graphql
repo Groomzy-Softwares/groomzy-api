@@ -38,6 +38,8 @@ type Time {
 
 # DayTime type
 type DayTime {
+  # Day time identifier
+  id: Int!
   # Day
   day: Day!
   # Day time
@@ -162,6 +164,8 @@ type Booking {
   id: Int!
   # Booking time
   bookingTime: String!
+  # Booking type
+  inHouse: Boolean!
   # Booking created time
   createdAt: String!
   # Booking status
@@ -173,7 +177,9 @@ type Booking {
   # Booking provider
   provider: Provider!
   # Booking staff
-  staffId: Staff!
+  staff: Staff!
+  # Service
+  service: Service!
   # Booking transport cost
   transportCost: TransportCost
 }

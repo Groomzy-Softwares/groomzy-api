@@ -1,24 +1,32 @@
 import { IContext } from "./types";
 import { signupClientMutation } from "./mutations/client/signup/signup";
 import { ISignupClientArgs } from "../resolvers/mutations/client/signup/types";
-import { ISignupProviderArgs } from "./mutations/provider/signup/types";
-import { signupProviderMutation } from "./mutations/provider/signup/signup";
+import { ISignupProviderArgs } from "./mutations/provider/types";
+import { signupProviderMutation } from "./mutations/provider/signup";
 import { ISigninClientArgs } from "./mutations/client/signin/types";
 import { signinClientMutation } from "./mutations/client/signin/signin";
-import { ISigninProviderArgs } from "./mutations/provider/signin/types";
-import { signinProviderMutation } from "./mutations/provider/signin/signin";
-import { addServiceMutation } from "./mutations/service/addServices/addServices";
-import { IAddServiceArgs } from "./mutations/service/addServices/types";
-import { addStaffMutation } from "./mutations/staff/addStaff/addStaff";
-import { IAddStaffArgs } from "./mutations/staff/addStaff/types";
-import { IDeleteServiceArgs } from "./mutations/service/deleteService/types";
-import { deleteServiceMutation } from "./mutations/service/deleteService/deleteService";
-import { IDeleteStaffArgs } from "./mutations/staff/deleteStaff/types";
-import { deleteStaffMutation } from "./mutations/staff/deleteStaff/deleteStaff";
-import { editServiceMutation } from "./mutations/service/editService/editService";
-import { IEditServiceArgs } from "./mutations/service/editService/types";
-import { IEditStaffArgs } from "./mutations/staff/editStaff/types";
-import { editStaffMutation } from "./mutations/staff/editStaff/editStaff";
+import { ISigninProviderArgs } from "./mutations/provider/types";
+import { signinProviderMutation } from "./mutations/provider/signin";
+import { addServiceMutation } from "./mutations/service/addServices";
+import { IAddServiceArgs } from "./mutations/service/types";
+import { addStaffMutation } from "./mutations/staff/addStaff";
+import { IAddStaffArgs } from "./mutations/staff/types";
+import { IDeleteServiceArgs } from "./mutations/service/types";
+import { deleteServiceMutation } from "./mutations/service/deleteService";
+import { IDeleteStaffArgs } from "./mutations/staff/types";
+import { deleteStaffMutation } from "./mutations/staff/deleteStaff";
+import { editServiceMutation } from "./mutations/service/editService";
+import { IEditServiceArgs } from "./mutations/service/types";
+import { IEditStaffArgs } from "./mutations/staff/types";
+import { editStaffMutation } from "./mutations/staff/editStaff";
+import { addOperatingTimeMutation } from "./mutations/operating_time/add_operating_time";
+import {
+  IAddOperatingTimeArgs,
+  IDeleteOperatingTimeArgs,
+  IEditOperatingTimeArgs,
+} from "./mutations/operating_time/types";
+import { editOperatingTimeMutation } from "./mutations/operating_time/edit_operating_time";
+import { deleteOperatingTimeMutation } from "./mutations/operating_time/delete_operating_time";
 
 export default {
   /**
@@ -96,5 +104,38 @@ export default {
    */
   editStaff: async (_: any, staff: IEditStaffArgs, ctx: IContext) => {
     return editStaffMutation(_, staff, ctx);
+  },
+
+  /**
+   * Add operating time mutation
+   */
+  addOperatingTime: async (
+    _: any,
+    operatingTime: IAddOperatingTimeArgs,
+    ctx: IContext
+  ) => {
+    return addOperatingTimeMutation(_, operatingTime, ctx);
+  },
+
+  /**
+   * Edit operating time mutation
+   */
+  editOperatingTime: async (
+    _: any,
+    operatingTime: IEditOperatingTimeArgs,
+    ctx: IContext
+  ) => {
+    return editOperatingTimeMutation(_, operatingTime, ctx);
+  },
+
+  /**
+   * Delete operating time mutation
+   */
+  deleteOperatingTime: async (
+    _: any,
+    operatingTime: IDeleteOperatingTimeArgs,
+    ctx: IContext
+  ) => {
+    return deleteOperatingTimeMutation(_, operatingTime, ctx);
   },
 };

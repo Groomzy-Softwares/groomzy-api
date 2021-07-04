@@ -57,4 +57,18 @@ type Mutation {
 
   # ********** Edit staff ********** #
   editStaff(staffId: Int!, fullName: String): Message!
+
+  # ********** Add operating time ********** #
+  addOperatingTime(day: String!, startTime: String!, endTime: String!): Message!
+
+  # ********** Edit operating time ********** #
+  editOperatingTime(
+    dayTimeId: Int!
+    day: String!
+    startTime: String
+    endTime: String
+  ): Message!
+
+  # ********** Delete operating time ********** #
+  deleteOperatingTime(dayTimeId: Int!): Message!
 }

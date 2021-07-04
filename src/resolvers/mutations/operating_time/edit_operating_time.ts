@@ -1,24 +1,27 @@
+import { BusinessDay } from "@prisma/client";
 import jwt from "jsonwebtoken";
 
-import { IContext } from "../../../types";
-import { IDeleteServiceArgs } from "./types";
+import { IContext } from "../../types";
+import { IEditOperatingTimeArgs } from "./types";
 
-export const deleteServiceMutation = async (
+export const editOperatingTimeMutation = async (
   _: any,
-  deleteServiceInput: IDeleteServiceArgs,
+  editOperatingTimeInput: IEditOperatingTimeArgs,
   ctx: IContext
 ) => {
-  const { serviceId, category } = deleteServiceInput;
+  const { dayTimeId, day, startTime, endTime } = editOperatingTimeInput;
+
+  const dayTimeToUpdate: Omit<IEditOperatingTimeArgs, "dayTimeId" | "day"> = {};
 
   try {
-    // Service id is required
-    if (!serviceId) {
-      throw new Error("Service id is required.");
+    // Start time to update
+    if (startTime) {
+      dayTimeToUpdate.startTime = startTime;
     }
 
-    // Service category is required
-    if (!category) {
-      throw new Error("Service category is required.");
+    // End time to update
+    if (endTime) {
+      dayTimeToUpdate.endTime = endTime;
     }
 
     try {
@@ -30,7 +33,7 @@ export const deleteServiceMutation = async (
       // TODO: Should we throw an Error instead?
 
       if (!authorizationHeader) {
-        return null;
+        throw new Error("Looks like you are not signed in. Please sign in.");
       }
 
       // Check if the JWT secret key is defined.
@@ -45,30 +48,19 @@ export const deleteServiceMutation = async (
 
       const { id: providerId, role } = signedIn as { id: number; role: string };
 
-      const serviceCategory = await ctx.prisma.category.findFirst({
+      await ctx.prisma.dayTime.update({
         where: {
-          category: category,
+          id: dayTimeId,
         },
-      });
-
-      await ctx.prisma.serviceProviderCategory.delete({
-        where: {
-          categoryId_serviceId_providerId: {
-            categoryId: serviceCategory.id,
-            serviceId,
-            providerId,
+        data: {
+          time: {
+            update: dayTimeToUpdate,
           },
         },
       });
 
-      await ctx.prisma.service.delete({
-        where: {
-          id: serviceId,
-        },
-      });
-
       return {
-        message: "Service deleted successfully",
+        message: "Day time updated successfully",
       };
     } catch (error) {
       throw Error(error.message);

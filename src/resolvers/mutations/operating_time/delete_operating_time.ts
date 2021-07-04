@@ -1,21 +1,16 @@
 import jwt from "jsonwebtoken";
 
-import { IContext } from "../../../types";
-import { IAddStaffArgs } from "./types";
+import { IContext } from "../../types";
+import { IDeleteOperatingTimeArgs } from "./types";
 
-export const addStaffMutation = async (
+export const deleteOperatingTimeMutation = async (
   _: any,
-  addStaffInput: IAddStaffArgs,
+  deleteOperatingTimeInput: IDeleteOperatingTimeArgs,
   ctx: IContext
 ) => {
-  const { fullName } = addStaffInput;
+  const { dayTimeId } = deleteOperatingTimeInput;
 
   try {
-    // Full name is required
-    if (!fullName) {
-      throw new Error("Full name is required.");
-    }
-
     try {
       // Check if an auth header is set.
       const authorizationHeader =
@@ -23,8 +18,9 @@ export const addStaffMutation = async (
         ctx.request.headers.authorization;
 
       // TODO: Should we throw an Error instead?
+
       if (!authorizationHeader) {
-        return null;
+        throw new Error("Looks like you are not signed in. Please sign in.");
       }
 
       // Check if the JWT secret key is defined.
@@ -39,19 +35,17 @@ export const addStaffMutation = async (
 
       const { id: providerId, role } = signedIn as { id: number; role: string };
 
-      await ctx.prisma.staff.create({
-        data: {
-          fullName,
-          provider: {
-            connect: {
-              id: providerId,
-            },
-          },
+      await ctx.prisma.dayTime.delete({
+        where: {
+          id: dayTimeId,
+        },
+        include: {
+          time: true,
         },
       });
 
       return {
-        message: "Staff added successfully",
+        message: "Day time updated successfully",
       };
     } catch (error) {
       throw Error(error.message);

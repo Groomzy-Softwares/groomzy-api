@@ -3,7 +3,7 @@
 type Query {
   clients: [Client!]!
   clientBookings(clientId: Int!): Client!
-  providers: [Provider!]!
+  providers(search: String, category: String): [Provider!]!
   providerRatings(providerId: Int!): Provider!
   providerBookings(providerId: Int!): Provider!
   providerServices(providerId: Int!): Provider!

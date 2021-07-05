@@ -9,6 +9,7 @@ import { providerServicesQuery } from "./queries/provider/provider_services";
 import { providerStaffsQuery } from "./queries/provider/provider_staffs";
 import { providerOperatingTimesQuery } from "./queries/provider/provider_operating_times";
 import { clientBookingsQuery } from "./queries/client/client_bookings";
+import { IProvidersArgs } from "./queries/provider/types";
 
 export default {
   /**
@@ -36,12 +37,12 @@ export default {
   /**
    * Get all service providers
    * @param _
-   * @param __
+   * @param providersArgs
    * @param ctx
    * @returns [Privider]
    */
-  providers: async (_: any, __: any, ctx: IContext) =>
-    providersQuery(_, __, ctx),
+  providers: async (_: any, providersArgs: IProvidersArgs, ctx: IContext) =>
+    providersQuery(_, providersArgs, ctx),
 
   /**
    * Get all provider services

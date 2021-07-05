@@ -8,6 +8,7 @@ import { providerBookingsQuery } from "./queries/provider/provider_bookings";
 import { providerServicesQuery } from "./queries/provider/provider_services";
 import { providerStaffsQuery } from "./queries/provider/provider_staffs";
 import { providerOperatingTimesQuery } from "./queries/provider/provider_operating_times";
+import { clientBookingsQuery } from "./queries/client/client_bookings";
 
 export default {
   /**
@@ -18,6 +19,19 @@ export default {
    * @returns [Client]
    */
   clients: async (_: any, __: any, ctx: IContext) => clientsQuery(_, __, ctx),
+
+  /**
+   * Get all client bookings
+   * @param _
+   * @param clientId number
+   * @param ctx
+   * @returns [Client]
+   */
+  clientBookings: async (
+    _: any,
+    clientBooking: { clientId: number },
+    ctx: IContext
+  ) => clientBookingsQuery(_, clientBooking, ctx),
 
   /**
    * Get all service providers

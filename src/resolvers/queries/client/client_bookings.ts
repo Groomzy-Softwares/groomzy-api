@@ -1,20 +1,20 @@
 import { IContext } from "../../types";
 
-export const providerBookingsQuery = async (
+export const clientBookingsQuery = async (
   _: any,
-  providerBookingsArgs: { providerId: number },
+  clientBookingsArgs: { clientId: number },
   ctx: IContext
 ) => {
-  const { providerId } = providerBookingsArgs;
+  const { clientId } = clientBookingsArgs;
   try {
-    return ctx.prisma.provider.findFirst({
+    return ctx.prisma.client.findFirst({
       where: {
-        id: providerId,
+        id: clientId,
       },
       select: {
         bookings: {
           include: {
-            client: {
+            provider: {
               select: {
                 id: true,
                 fullName: true,

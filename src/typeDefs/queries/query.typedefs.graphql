@@ -1,8 +1,8 @@
 # TO DO ADD MORE QUERY TYPES
 
 type Query {
-  client: Client
   clients: [Client!]!
+  clientBookings(clientId: Int!): Client!
   providers: [Provider!]!
   providerRatings(providerId: Int!): Provider!
   providerBookings(providerId: Int!): Provider!

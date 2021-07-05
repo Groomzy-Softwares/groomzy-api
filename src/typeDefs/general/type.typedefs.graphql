@@ -84,6 +84,8 @@ type Client {
   token: String
   # Client role
   role: String!
+  # Client bookings
+  bookings: [Booking!]
 }
 
 # Provider type

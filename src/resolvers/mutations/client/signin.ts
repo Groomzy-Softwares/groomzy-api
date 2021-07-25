@@ -2,7 +2,7 @@ import { validate } from "isemail";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import { IContext } from "../../../types";
+import { IContext } from "../../types";
 import { ISigninClientArgs } from "./types";
 
 export const signinClientMutation = async (

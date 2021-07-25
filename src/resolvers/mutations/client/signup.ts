@@ -1,10 +1,10 @@
 import { validate } from "isemail";
 import bcrypt from "bcrypt";
 
-import { IContext } from "../../../types";
+import { IContext } from "../../types";
 import { ISignupClientArgs } from "./types";
-import { mailContent } from "../../../../utils";
-import { transport } from "../../../../utils";
+import { mailContent } from "../../../utils";
+import { transport } from "../../../utils";
 
 export const signupClientMutation = async (
   _: any,

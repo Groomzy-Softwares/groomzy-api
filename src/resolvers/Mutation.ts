@@ -1,10 +1,14 @@
 import { IContext } from "./types";
-import { signupClientMutation } from "./mutations/client/signup/signup";
-import { ISignupClientArgs } from "../resolvers/mutations/client/signup/types";
+import { signupClientMutation } from "./mutations/client/signup";
+import {
+  IClientBookArgs,
+  IClientCompleteBookArgs,
+  ISigninClientArgs,
+  ISignupClientArgs,
+} from "../resolvers/mutations/client/types";
 import { ISignupProviderArgs } from "./mutations/provider/types";
 import { signupProviderMutation } from "./mutations/provider/signup";
-import { ISigninClientArgs } from "./mutations/client/signin/types";
-import { signinClientMutation } from "./mutations/client/signin/signin";
+import { signinClientMutation } from "./mutations/client/signin";
 import { ISigninProviderArgs } from "./mutations/provider/types";
 import { signinProviderMutation } from "./mutations/provider/signin";
 import { addServiceMutation } from "./mutations/service/addServices";
@@ -27,6 +31,8 @@ import {
 } from "./mutations/operating_time/types";
 import { editOperatingTimeMutation } from "./mutations/operating_time/edit_operating_time";
 import { deleteOperatingTimeMutation } from "./mutations/operating_time/delete_operating_time";
+import { clientBookMutation } from "./mutations/client/book";
+import { clientBookCompleteMutation } from "./mutations/client/book_complete";
 
 export default {
   /**
@@ -137,5 +143,23 @@ export default {
     ctx: IContext
   ) => {
     return deleteOperatingTimeMutation(_, operatingTime, ctx);
+  },
+
+  /**
+   * Client book mutation
+   */
+  clientBook: async (_: any, clientBook: IClientBookArgs, ctx: IContext) => {
+    return clientBookMutation(_, clientBook, ctx);
+  },
+
+  /**
+   * Client book complete mutation
+   */
+  clientBookComplete: async (
+    _: any,
+    clientBookComplete: IClientCompleteBookArgs,
+    ctx: IContext
+  ) => {
+    return clientBookCompleteMutation(_, clientBookComplete, ctx);
   },
 };

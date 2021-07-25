@@ -80,6 +80,7 @@ const providerNormalQuery = () => ({
     bookings: {
       include: {
         rating: true,
+        service: true,
       },
     },
     serviceProviderCategories: {

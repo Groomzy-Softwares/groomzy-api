@@ -71,4 +71,18 @@ type Mutation {
 
   # ********** Delete operating time ********** #
   deleteOperatingTime(dayTimeId: Int!): Message!
+
+  # ********** Client book ********** #
+  clientBook(
+    providerId: Int!
+    serviceId: Int!
+    staffId: Int!
+    bookingDate: String!
+    bookingTime: String!
+    inHouse: Boolean!
+    address: String
+  ): Booking!
+
+  # ********** Client book complete ********** #
+  clientBookComplete(bookingId: Int!, complete: Boolean!): Message!
 }
